@@ -1,0 +1,59 @@
+# mceir.conf - key map overrides
+#
+# Copy this next to mceir.exe as "mceir.conf" and edit. Anything not listed
+# here keeps its built-in mapping; run "mceir.exe --dump-keymap" to see the
+# result, and "mceir.exe --print" to read scancodes off a button you cannot
+# identify.
+#
+#   <scancode hex> = <key name> [repeat|norepeat]
+#
+# Key names: UP DOWN LEFT RIGHT ENTER ESCAPE BACKSPACE TAB SPACE HOME END
+#            PAGEUP PAGEDOWN INSERT DELETE LWIN RWIN APPS SLEEP
+#            VOLUME_UP VOLUME_DOWN VOLUME_MUTE
+#            MEDIA_PLAY_PAUSE MEDIA_STOP MEDIA_NEXT_TRACK MEDIA_PREV_TRACK
+#            LAUNCH_MEDIA_SELECT BROWSER_BACK BROWSER_FORWARD BROWSER_HOME
+#            F1..F24, a single letter A-Z, a single digit 0-9
+#            NONE  (recognise the button but send nothing)
+
+# ---------------------------------------------------------------------------
+# READ THIS ONE FIRST
+#
+# Power sends SLEEP, so a stray infrared reflection can suspend the machine.
+# Uncomment to keep the button recognised but harmless:
+#
+# 800f040c = NONE
+# ---------------------------------------------------------------------------
+
+# Every button is bound out of the box. The ones below have no natural desktop
+# meaning, so they were given function keys and mnemonic letters -- rebind them
+# to whatever your media player actually uses.
+
+# 800f045b = F1              # Red
+# 800f045c = F2              # Green
+# 800f045d = F3              # Yellow
+# 800f045e = F4              # Blue
+# 800f0426 = F5              # Guide
+# 800f0446 = F6              # TV
+# 800f0447 = F7              # Music
+# 800f0448 = F8              # RecordedTV
+# 800f0449 = F9              # Pictures
+# 800f044a = F10             # Videos
+# 800f0425 = F11             # LiveTV
+# 800f0424 = F12             # DVDMenu
+
+# 800f040f = I               # Info
+# 800f0417 = R               # Record
+# 800f0427 = Z               # Aspect      (VLC and MPC cycle aspect on Z)
+# 800f0432 = V               # Visualize
+# 800f0433 = W               # Slideshow
+# 800f0434 = E               # Eject
+# 800f044d = T               # Title
+# 800f0450 = K               # Radio
+# 800f045a = C               # Subtitle    (C for captions)
+# 800f041c = N               # Hash  #
+# 800f041d = F               # Star  *
+
+# Skip and Replay send next/previous track by default. If you would rather they
+# seek within a track, most players use these:
+# 800f041a = RIGHT repeat    # Skip
+# 800f041b = LEFT repeat     # Replay

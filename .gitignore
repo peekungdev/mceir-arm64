@@ -1,0 +1,9 @@
+# Build output: binaries, objects, tests, the staged driver package and its
+# certificate, the submission cab.
+build/
+
+# Local run logs.
+*.log
+
+# A personal key map; mceir.conf.sample is the committed template.
+/mceir.conf

@@ -1,0 +1,59 @@
+;
+; mceir.inf
+;
+; Binds WinUSB to the Philips eHome MCE infrared transceiver
+; (USB\VID_0471&PID_060C) so a user-mode daemon can drive it.
+;
+; Windows 11 ARM64 26H1 ships no driver for the USB\MS_COMP_USBCIR compatible
+; ID this device advertises, so it lands at CM_PROB_FAILED_INSTALL (Code 28).
+; There is no in-box replacement to fall back on and the x64 eHome driver
+; cannot load on an ARM64 kernel, so the device is bound to WinUSB instead and
+; the IR protocol is implemented in user mode by mceir.exe.
+;
+; This INF deliberately matches on the two-part hardware ID rather than the
+; revisioned one, so a firmware revision bump does not silently unbind it.
+;
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = USBDevice
+ClassGuid   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
+Provider    = %ProviderName%
+CatalogFile = mceir.cat
+DriverVer   = 08/25/2026,1.0.0.0
+PnpLockdown = 1
+
+[Manufacturer]
+%ManufacturerName% = Standard,NTARM64
+
+[Standard.NTARM64]
+%DeviceName% = MceIr_Install, USB\VID_0471&PID_060C
+
+; ---------------------------------------------------------------------------
+; winusb.inf requires that an including INF reference all three of its
+; DDInstall sections, even the ones that are currently empty -- that is what
+; lets Microsoft extend the inbox sections later without breaking us.
+; ---------------------------------------------------------------------------
+
+[MceIr_Install.NT]
+Include = winusb.inf
+Needs   = WINUSB.NT
+
+[MceIr_Install.NT.HW]
+Include = winusb.inf
+Needs   = WINUSB.NT.HW
+AddReg  = MceIr_AddReg_HW
+
+[MceIr_Install.NT.Services]
+Include = winusb.inf
+Needs   = WINUSB.NT.Services
+
+; The daemon finds the device by this interface GUID rather than by hardware
+; ID, so it keeps working if the INF is ever pointed at another transceiver.
+[MceIr_AddReg_HW]
+HKR,,DeviceInterfaceGUIDs,0x00010000,"{65216FE6-9E29-41CB-9ABD-4CBE9CAD8AA4}"
+
+[Strings]
+ProviderName     = "mceir-arm64"
+ManufacturerName = "Philips"
+DeviceName       = "eHome Infrared Transceiver (WinUSB)"
